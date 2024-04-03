@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour
     public float speed;
     public int score = 0;
     public TMP_Text scoreTxt;
+    public GameObject spot;
+    public AudioClip click;
 
     private void Start()
     {
@@ -24,11 +26,28 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        
+        var brick = collision.gameObject.GetComponent<Brick>();
+
+        if (collision.gameObject.CompareTag("Wall"))
         {
-            Destroy(collision.gameObject);
-            score += 10;
-            scoreTxt.text = score.ToString();
+            var source = GetComponent<AudioSource>();
+            source.clip = click;
+            source.Play();
+
         }
+           
+        if (brick)
+        {
+            brick.Damage();
+        }
+
+        if(collision.gameObject.CompareTag("End"))
+        {
+            transform.position = spot.transform.position;
+            GameManager.lives--;
+            
+        }
+
     }
 }
