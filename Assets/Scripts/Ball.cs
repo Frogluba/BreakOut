@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class Ball : MonoBehaviour
 {
@@ -28,6 +29,14 @@ public class Ball : MonoBehaviour
     {
         
         var brick = collision.gameObject.GetComponent<Brick>();
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            transform.DOScale(Vector3.one * 1.5f, 0.1f)
+            .SetEase(Ease.Linear)
+            .SetLoops(2, LoopType.Yoyo)
+            .ChangeStartValue(Vector3.one);
+        }
 
         if (collision.gameObject.CompareTag("Wall"))
         {
